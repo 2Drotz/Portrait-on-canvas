@@ -1,18 +1,14 @@
-// import checkNumInputs from "./checkNumInputs";
-
+import { postData } from '../services/requests';
 
 const forms = () => {
    const form = document.querySelectorAll('form'),
       inputs = document.querySelectorAll('input'),
       upload = document.querySelectorAll('[name="upload"]');
 
-   // checkNumInputs('input[name="user_phone"]');
-
-
    const message = {
-      loading: 'Load...',
-      success: "Спасибо, мы с вами свяжемся!",
-      failure: 'Что-то не так ',
+      loading: 'Загрузка...',
+      success: 'Спасибо! Скоро мы с вами свяжемся',
+      failure: 'Что-то пошло не так...',
       spinner: 'assets/img/spinner.gif',
       ok: 'assets/img/ok.png',
       fail: 'assets/img/fail.png'
@@ -23,22 +19,12 @@ const forms = () => {
       question: 'assets/question.php'
    };
 
-
-   const postData = async (url, data) => {
-      let res = await fetch(url, {
-         method: "POST",
-         body: data
-      });
-
-      return await res.text();
-   };
-
    const clearInputs = () => {
       inputs.forEach(item => {
          item.value = '';
       });
       upload.forEach(item => {
-         item.previousElementSibling.textContent = 'Файл не выбран';
+         item.previousElementSibling.textContent = "Файл не выбран";
       });
    };
 
@@ -47,7 +33,8 @@ const forms = () => {
          console.log(item.files[0]);
          let dots;
          const arr = item.files[0].name.split('.');
-         arr[0].length > 6 ? dots = '...' : dots = '.';
+
+         arr[0].length > 6 ? dots = "..." : dots = '.';
          const name = arr[0].substring(0, 6) + dots + arr[1];
          item.previousElementSibling.textContent = name;
       });
@@ -77,7 +64,7 @@ const forms = () => {
 
          const formData = new FormData(item);
          let api;
-         item.closest('.popup-design') || item.classList.contains('calc_form') ? api = path.designer : path.question;
+         item.closest('.popup-design') || item.classList.contains('calc_form') ? api = path.designer : api = path.question;
          console.log(api);
 
          postData(api, formData)
@@ -102,4 +89,5 @@ const forms = () => {
       });
    });
 };
+
 export default forms;
